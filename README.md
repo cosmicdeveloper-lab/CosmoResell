@@ -69,9 +69,9 @@ python main.py
 
 ## 📌 TODOs
 
-Add support for more marketplaces
-Store previous prices for trend analysis
-Add CLI options for search term and notification type
+- Add support for more marketplaces
+- Store previous prices for trend analysis
+- Add CLI options for search term and notification type
 
 ## 🤝 Contributions
 
