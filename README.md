@@ -1,6 +1,6 @@
 # 📦CosmoResell
 
-### CosmoResell is a Python-based automation tool that helps you track the prices of specific items on eBay and Facebook Marketplace. It scrapes listings using Selenium (for eBay) and Playwright (for Facebook Marketplace), calculates the average price, and sends an SMS or email notification with relevant item links.
+CosmoResell is a Python-based automation tool that helps you track the prices of specific items on eBay and Facebook Marketplace. It scrapes listings using Selenium (for eBay) and Playwright (for Facebook Marketplace), calculates the average price, and sends an SMS or email notification with relevant item links.
 
 ## 🔧 Features
 
