@@ -49,7 +49,8 @@ TWILIO_AUTH_TOKEN=your_auth_token
 TWILIO_PHONE=your_twilio_phone_number
 USER_PHONE=recipient_phone_number
 ```
-### 4. Saving Facebook Login Session with Playwright, This will launch a browser window. Log into your Facebook account manually.
+### 4. Saving Facebook Login Session with Playwright
+This will launch a browser window. Log into your Facebook account manually.
 
 ```bash
 python save_facebook_profile.py
