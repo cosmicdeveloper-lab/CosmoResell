@@ -62,7 +62,8 @@ python main.py
 ```
 ## 📤 Notification Output
 
-# After processing, the script will:
+### 
+After processing, the script will:
   Print average price in the console
     Send an SMS or email with:
         Links to relevant listings
