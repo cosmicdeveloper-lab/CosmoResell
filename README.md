@@ -71,7 +71,7 @@ python main.py
 
 Here's what a typical signal looks like in Telegram:
 
-![CosmoResell Signal Screenshot](https://drive.google.com/uc?id=1C4Y6RIS_d5UYACj6ZJM619lGKc0gPGd4)
+![CosmoResell Signal Screenshot](https://drive.google.com/uc?id=1OBuLN9P0bnxuF_W9Hop4MOzHbzN9P8hZ)
 
 ## 🤝 Contributions
 
