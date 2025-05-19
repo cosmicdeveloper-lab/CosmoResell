@@ -1,39 +1,70 @@
-import requests
-from bs4 import BeautifulSoup
-import re
+from playwright.async_api import async_playwright
 
 
-def ebay_scraper(keyword, max_pages=5):
-    headers = {"User-Agent": "Mozilla/5.0"}
+async def ebay_scraper(keyword, max_pages):
+    """
+    Scrapes Ebay Marketplace for items matching a given keyword.
+
+    Parameters:
+    ----------
+    keyword : str
+        The search keyword to use on Ebay Marketplace.
+    max_items : int
+        The maximum number of items to return.
+
+    Returns:
+    -------
+    List[Tuple[str, str, str]]
+        A list of tuples where each tuple contains:
+            - title (str): The item's title
+            - price (str): The item's price
+            - url (str): Direct link to the listing
+    """
     items = []
 
-    for page in range(1, max_pages + 1):
-        url = f"https://www.ebay.co.uk/sch/i.html?_nkw={keyword}&_pgn={page}"
-        response = requests.get(url, headers=headers)
-        if response.status_code != 200:
-            continue
+    async with async_playwright() as p:
+        browser = await p.chromium.launch(headless=True)  # Set False to see the browser
+        context = await browser.new_context()
+        page = await context.new_page()
 
-        soup = BeautifulSoup(response.text, 'html.parser')
-        listings = soup.select('.s-item')
+        for page_num in range(1, max_pages + 1):
+            search_url = f"https://www.ebay.co.uk/sch/i.html?_nkw={keyword}&_pgn={page_num}"
+            print(f"[INFO] Navigating to: {search_url}")
+            await page.goto(search_url, timeout=60000)
 
-        for item in listings:
-            title_elem = item.select_one('.s-item__title')
-            price_elem = item.select_one('.s-item__price')
-            link_elem = item.select_one('.s-item__link')
+            # Wait for results to load
+            await page.wait_for_selector(".s-item")
 
-            if not title_elem or not price_elem or not link_elem:
-                continue
+            # Extract data from the page
+            listings = await page.query_selector_all(".s-item")
 
-            title = title_elem.text.strip()
-            price_text = price_elem.text.strip()
-            link = link_elem.get("href")
+            for item in listings:
+                title_el = await item.query_selector(".s-item__title")
+                price_el = await item.query_selector(".s-item__price")
+                link_el = await item.query_selector(".s-item__link")
 
-            price_match = re.search(r'£([\d,.]+)', price_text)
-            if price_match and link:
-                try:
-                    price = float(price_match.group(1).replace(',', ''))
-                    items.append((title, price, link))
-                except ValueError:
-                    continue
+                if title_el and price_el and link_el:
+                    title = await title_el.inner_text()
+                    price = await price_el.inner_text()
+                    link = await link_el.get_attribute("href")
 
+                    # Skip promotional or non-product items
+                    if "Shop on eBay" in title or not link:
+                        continue
+
+                    # Normalize for keyword check
+                    norm_title = title.lower().replace(" ", "")
+                    norm_keyword = keyword.lower().replace(" ", "")
+
+                    if norm_keyword not in norm_title:
+                        continue
+
+                    # Clean price (e.g., remove £ and commas)
+                    import re
+                    match = re.search(r"[£€$]([\d,.]+)", price)
+                    if match:
+                        clean_price = match.group(1).replace(",", "")
+                        items.append((title.strip(), clean_price, link.strip()))
+
+        await browser.close()
     return items

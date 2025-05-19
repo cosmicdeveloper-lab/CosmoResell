@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Scraper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-white shadow-lg rounded-xl p-6" x-data="{ loading: false }">
+        <h1 class="text-2xl font-bold mb-4 text-center text-gray-800">Search for Deals</h1>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded">
+                    {% for message in messages %}
+                        <p>{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" @submit="loading = true">
+            {{ form.hidden_tag() }}
+
+            <!-- Source Field -->
+            <label class="block mb-2 text-sm font-medium text-gray-700">{{ form.source.label }}</label>
+            {{ form.source(class="w-full px-3 py-2 border rounded-lg mb-1") }}
+            {% if form.source.errors %}
+                <p class="text-red-500 text-sm mb-2">{{ form.source.errors[0] }}</p>
+            {% endif %}
+
+            <!-- Keyword Field -->
+            <label class="block mb-2 text-sm font-medium text-gray-700">{{ form.keyword.label }}</label>
+            {{ form.keyword(class="w-full px-3 py-2 border rounded-lg mb-1") }}
+            {% if form.keyword.errors %}
+                <p class="text-red-500 text-sm mb-2">{{ form.keyword.errors[0] }}</p>
+            {% endif %}
+
+            <!-- Max Pages Field -->
+            <label class="block mb-2 text-sm font-medium text-gray-700">{{ form.max_pages.label }}</label>
+            {{ form.max_pages(class="w-full px-3 py-2 border rounded-lg mb-1", type="number", min="1") }}
+            {% if form.max_pages.errors %}
+                <p class="text-red-500 text-sm mb-2">{{ form.max_pages.errors[0] }}</p>
+            {% endif %}
+
+            <!-- Threshold Field -->
+            <label class="block mb-2 text-sm font-medium text-gray-700">{{ form.threshold.label }}</label>
+            {{ form.threshold(class="w-full px-3 py-2 border rounded-lg mb-1", type="float", step="any") }}
+            {% if form.threshold.errors %}
+                <p class="text-red-500 text-sm mb-2">{{ form.threshold.errors[0] }}</p>
+            {% endif %}
+
+            <!-- Submit Button -->
+            <button type="submit" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-200 flex items-center justify-center mt-4">
+                <svg x-show="loading" class="animate-spin h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+                </svg>
+                <span x-text="loading ? 'Scraping...' : 'Scrape'"></span>
+            </button>
+        </form>
+    </div>
+</body>
+</html>

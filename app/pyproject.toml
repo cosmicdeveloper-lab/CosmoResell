@@ -1,0 +1,23 @@
+[project]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "benjamin",email = "cosmicdeveloper.b@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "quart (>=0.20.0,<0.21.0)"
+]
+
+[tool.poetry]
+packages = [{include = "app", from = "src"}]
+
+[tool.poetry.scripts]
+start = "app:run"
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
