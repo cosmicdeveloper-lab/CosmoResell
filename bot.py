@@ -10,18 +10,19 @@ The user is guided through a conversation to input:
 Results are fetched, formatted, and sent to a Telegram chat.
 """
 
-import requests
+
 import re
 import os
 from dotenv import load_dotenv
-
-
+import aiohttp
+import logging
 from telegram_text import Link
-from telegram.ext import Application
+from telegram.ext import Application, CallbackContext
 from telegram import Update
 from telegram.ext import (CommandHandler, MessageHandler, filters, ContextTypes, ConversationHandler)
 from core import get_cheap_items
 
+logger = logging.getLogger(__name__)
 
 # Load env
 load_dotenv()
@@ -53,7 +54,7 @@ def format_message(avg_price, cheap_items):
     return ''.join(lines)
 
 
-def send_telegram_message(token, chat_id, message):
+async def send_telegram_message(token, chat_id, message):
     url = f"https://api.telegram.org/bot{token}/sendMessage"
     max_len = 4096
     lines = message.splitlines(keepends=True)
@@ -67,16 +68,16 @@ def send_telegram_message(token, chat_id, message):
             chunk += line
     if chunk:
         chunks.append(chunk)
-
-    for c in chunks:
-        payload = {
-            'chat_id': chat_id,
-            'text': c,
-            'parse_mode': 'Markdown'
-        }
-        # Send each message chunk to avoid exceeding Telegram's character limit
-        response = requests.post(url, data=payload)
-        response.raise_for_status()
+    async with aiohttp.ClientSession() as session:
+        for c in chunks:
+            payload = {
+                'chat_id': chat_id,
+                'text': c,
+                'parse_mode': 'Markdown'
+            }
+            # Send each message chunk to avoid exceeding Telegram's character limit
+            response = await session.post(url, data=payload)
+            response.raise_for_status()
 
 
 # Conversation Handlers
@@ -134,11 +135,20 @@ async def handle_threshold(update: Update, context: ContextTypes.DEFAULT_TYPE):
     threshold_ratio = context.user_data['threshold_ratio']
 
     # Fetch and send result
-    avg_price, cheap_items = await get_cheap_items(source, keyword, max_pages, threshold_ratio)
-    message = format_message(avg_price, cheap_items)
-    send_telegram_message(TOKEN, CHAT_ID, message)
+    await update.message.reply_text(f"Searching {source.title()} for '{keyword}'... This may take a moment.")
+
+    try:
+        avg_price, cheap_items = await get_cheap_items(source, keyword, max_pages, threshold_ratio)
+        message = format_message(avg_price, cheap_items)
+    except Exception as e:
+        message = f'Error occurred while fetching deals: {e}'
+    await send_telegram_message(TOKEN, CHAT_ID, message)
 
     return ConversationHandler.END
+
+
+async def error_handler(update: Update, context: CallbackContext):
+    logger.error(f"Exception occurred: {context.error}")
 
 
 async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -148,6 +158,7 @@ async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def start_bot():
     app = Application.builder().token(TOKEN).build()
+    app.add_error_handler(error_handler)
 
     conv = ConversationHandler(
         entry_points=[CommandHandler('start', start)],

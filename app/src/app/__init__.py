@@ -1,4 +1,4 @@
-from quart import Quart, redirect, render_template, url_for, request
+from quart import Quart, redirect, render_template, url_for, request, flash
 from .forms import MyForm
 from core import get_cheap_items
 from dotenv import load_dotenv
@@ -52,12 +52,17 @@ async def scrap(source, keyword, max_pages, threshold):
     Returns a rendered HTML list of filtered items.
     """
 
-    logger.info(f"Scraping: source={source}, keyword={keyword}, max_pages={max_pages}, threshold={threshold}")
-    items = await get_cheap_items(source, keyword, max_pages, threshold)
+    logger.info(f'Scraping: source={source}, keyword={keyword}, max_pages={max_pages}, threshold={threshold}')
+    try:
+        items = await get_cheap_items(source, keyword, max_pages, threshold)
+    except Exception as e:
+        logger.error(f'Scraping failed: {e}')
+        items = []
+        await flash('An error occurred during scraping. Please try again.', 'error')
 
     return await render_template('list.html', items=items)
 
 
 async def start_app():
     """Starts the Quart app on 0.0.0.0:8000 asynchronously."""
-    await app.run_task(host="0.0.0.0", port=8000)
+    await app.run_task(host='0.0.0.0', port=8000)
