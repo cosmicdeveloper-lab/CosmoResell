@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://drive.google.com/uc?id=110AyVKuqSk_y_6gd4nJEJQYVhLzgMlOE" alt="CosmoResell Logo" height="120"/>
+  <img src="https://drive.google.com/uc?id=19-GQz6--R7eaCbaDvw7bVImV1kYBdCkH" alt="CosmoResell Logo" height="120"/>
 </p>
 
 <h1 align="center">📦 CosmoResell</h1>
@@ -89,12 +89,15 @@ python main.py
 ## 📸 Example Signal
 
 Telegram Notification
+
 ![CosmoResell Signal Screenshot](https://drive.google.com/uc?id=1OBuLN9P0bnxuF_W9Hop4MOzHbzN9P8hZ)
 
 Web Interface – Search Page
+
 ![CosmoResell search page](https://drive.google.com/uc?id=1upmydgaSalTlsAxzppMETrdbLZh4Yd_Y)
 
 Web Interface – Search Results
+
 ![CosmoResell search result](https://drive.google.com/uc?id=1jyqcxLX93woLDbfdy1tzQMjrLV2jmwp3)
 
 ## 🤝 Contributions
