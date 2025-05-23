@@ -1,28 +1,49 @@
 <p align="center">
-  <img src="https://drive.google.com/uc?id=110AyVKuqSk_y_6gd4nJEJQYVhLzgMlOE" alt="CosmoResell Logo"/>
+  <img src="https://drive.google.com/uc?id=110AyVKuqSk_y_6gd4nJEJQYVhLzgMlOE" alt="CosmoResell Logo" height="120"/>
 </p>
 
-# 📦CosmoResell
+<h1 align="center">📦 CosmoResell</h1>
 
-CosmoResell is a Python-based automation tool that helps you track the prices of specific items on eBay and Facebook Marketplace
+<p align="center">
+  A powerful Python-based automation tool for tracking and analyzing item prices on eBay and Facebook Marketplace.
+</p>
+
+---
+
+## ✨ Overview
+
+**CosmoResell** helps resellers and enthusiasts automate the process of price tracking for specific items across two major platforms: **eBay** and **Facebook Marketplace**. It scrapes item listings, calculates average prices, and sends customizable alerts via Telegram or a web interface.
+
+---
 
 ## 🔧 Features
 
-- 🔍 Scrape item listings from:
-    - eBay
-    - Facebook Marketplace (via Playwright)
-- 💰 Calculate the average price of a specific item
-- 📬 Notify you via:
+- 🔍 **Marketplace Scraping**  
+  Automatically extract listing data from:
+  - eBay
+  - Facebook Marketplace (via Playwright)
+
+- 💰 **Price Analysis**  
+  Calculates and compares average prices for selected items.
+
+- 📬 **Real-Time Alerts**  
+  Sends notifications through:
   - Telegram
-  - Web interface (via Quart)
-- 🎯 Customizable price threshold alerts
+  - Web interface (using Quart)
+
+- 🎯 **Custom Threshold Alerts**  
+  Define price thresholds and get alerted when deals meet your criteria.
+
+---
 
 ## 🧰 Tech Stack
 
-- Python 3.9+
-- Playwright
-- quart
-- python-telegram-bot
+- **Python** 3.9+
+- [Playwright](https://playwright.dev/python/)
+- [Quart](https://pgjones.gitlab.io/quart/)
+- [python-telegram-bot](https://github.com/python-telegram-bot/python-telegram-bot)
+
+---
 
 ## 🚀 Getting Started
 
@@ -67,9 +88,14 @@ python main.py
 
 ## 📸 Example Signal
 
-Here's what a typical signal looks like in Telegram:
-
+Telegram Notification
 ![CosmoResell Signal Screenshot](https://drive.google.com/uc?id=1OBuLN9P0bnxuF_W9Hop4MOzHbzN9P8hZ)
+
+Web Interface – Search Page
+![CosmoResell search page](https://drive.google.com/uc?id=1upmydgaSalTlsAxzppMETrdbLZh4Yd_Y)
+
+Web Interface – Search Results
+![CosmoResell search result](https://drive.google.com/uc?id=1jyqcxLX93woLDbfdy1tzQMjrLV2jmwp3)
 
 ## 🤝 Contributions
 
