@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://drive.google.com/uc?id=1at-9o4aDMI5M1CHKJMQvj0-Xsyyk7AN6" alt="CosmoResell Logo" height="120"/>
+  <img src="https://drive.google.com/uc?id=1at-9o4aDMI5M1CHKJMQvj0-Xsyyk7AN6" alt="CosmoResell Logo" width="200"/>
 </p>
 
 <h1 align="center">📦 CosmoResell</h1>
